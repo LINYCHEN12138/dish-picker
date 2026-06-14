@@ -46,7 +46,7 @@ export function selectFallbackDishes(request: AiMenuRequest, dishes: Dish[], pre
   return selected;
 }
 
-export function makeFallbackResponse(request: AiMenuRequest, dishes: Dish[], preferredIds: string[] = []): AiMenuResponse {
+export function makeFallbackResponse(request: AiMenuRequest, dishes: Dish[], preferredIds: string[] = [], diagnosticCode?: string): AiMenuResponse {
   const selected = selectFallbackDishes(request, dishes, preferredIds);
   const availableText = request.availableIngredients.length
     ? `优先用上家里的${request.availableIngredients.join("、")}。`
@@ -64,7 +64,9 @@ export function makeFallbackResponse(request: AiMenuRequest, dishes: Dish[], pre
       .map((dish, index) => `${index + 1}. ${dish.name}：${index === 0 ? "先备料并开始制作" : "按上桌时间衔接制作"}`),
     notes: request.notes ? [`已考虑补充说明：${request.notes}`] : ["推荐结果来自本地菜品库，可点进菜品查看完整教程。"],
     source: "fallback",
-    notice: "AI 服务暂时不可用，已根据你的偏好完成本地智能搭配。",
+    notice: diagnosticCode
+      ? `AI 服务暂时不可用（${diagnosticCode}），已根据你的偏好完成本地智能搭配。`
+      : "AI 服务暂时不可用，已根据你的偏好完成本地智能搭配。",
   };
 }
 

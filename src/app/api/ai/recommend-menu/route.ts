@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getDishes } from "@/services/dishService";
 import { makeFallbackResponse } from "@/lib/ai/fallback";
-import { requestDeepSeekRecommendation } from "@/lib/ai/provider";
+import { getAiDiagnosticCode, requestDeepSeekRecommendation } from "@/lib/ai/provider";
 import { validateModelResponse } from "@/lib/ai/validation";
 import type { AiMenuRequest, MaxMinutes, MealType, MenuComposition } from "@/types/ai";
 
@@ -48,7 +48,9 @@ export async function POST(request: Request) {
   try {
     const modelResponse = await requestDeepSeekRecommendation(input, dishes);
     return NextResponse.json(validateModelResponse(modelResponse, input, dishes));
-  } catch {
-    return NextResponse.json(makeFallbackResponse(input, dishes));
+  } catch (error) {
+    const diagnosticCode = getAiDiagnosticCode(error);
+    console.error("[AI recommendation]", diagnosticCode);
+    return NextResponse.json(makeFallbackResponse(input, dishes, [], diagnosticCode));
   }
 }
