@@ -1,0 +1,38 @@
+import type { MobileThemeConfig, MobileThemeId } from "@/types/theme";
+
+export const mobileThemes: Record<MobileThemeId, MobileThemeConfig> = {
+  hachiware: {
+    id: "hachiware",
+    name: "小八",
+    mascot: "🐱",
+    backgroundImage: "/assets/themes/hachiware-mobile-background.png",
+    primaryColor: "#5596F5",
+    secondaryColor: "#DCEEFF",
+    accentColor: "#8ABEFF",
+    textColor: "#184A82",
+    mutedTextColor: "#6884A5",
+    cardBackground: "rgba(255,255,255,.78)",
+    cardBorder: "rgba(126,181,245,.42)",
+    buttonGradient: "linear-gradient(135deg,#82BCFF,#4E8FF2)",
+    shadowColor: "rgba(70,132,210,.20)",
+    iconStyle: "blue-paw",
+    decorationStyle: "cloud",
+  },
+  usagi: {
+    id: "usagi",
+    name: "乌萨奇",
+    mascot: "🐰",
+    backgroundImage: "/assets/themes/usagi-mobile-background.png",
+    primaryColor: "#F5A61B",
+    secondaryColor: "#FFF0B9",
+    accentColor: "#FFC94E",
+    textColor: "#704512",
+    mutedTextColor: "#9B7950",
+    cardBackground: "rgba(255,253,246,.84)",
+    cardBorder: "rgba(244,180,55,.40)",
+    buttonGradient: "linear-gradient(135deg,#FFD767,#FFA91E)",
+    shadowColor: "rgba(217,153,42,.20)",
+    iconStyle: "warm-carrot",
+    decorationStyle: "flower",
+  },
+};
