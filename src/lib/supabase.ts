@@ -7,7 +7,7 @@ let client: SupabaseClient<Database> | null | undefined;
 export function getSupabaseClient() {
   if (!publicEnv.supabaseEnabled) return null;
   if (client !== undefined) return client;
-  client = createClient<Database>(publicEnv.supabaseUrl, publicEnv.supabaseAnonKey, {
+  client = createClient<Database>(publicEnv.supabaseUrl, publicEnv.supabasePublishableKey, {
     auth: { persistSession: typeof window !== "undefined", autoRefreshToken: typeof window !== "undefined" },
   });
   return client;

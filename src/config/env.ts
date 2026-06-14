@@ -1,8 +1,11 @@
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() ?? "";
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim() ?? "";
+const supabasePublishableKey =
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY?.trim() ||
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim() ||
+  "";
 
 export const publicEnv = {
   supabaseUrl,
-  supabaseAnonKey,
-  supabaseEnabled: Boolean(supabaseUrl && supabaseAnonKey),
+  supabasePublishableKey,
+  supabaseEnabled: Boolean(supabaseUrl && supabasePublishableKey),
 };
