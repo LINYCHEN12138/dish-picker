@@ -1,24 +1,14 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import { createShareText } from "@/lib/menu-utils";
 import { useMenu } from "@/providers/menu-provider";
 import { ThemeIcon } from "@/components/mobile-theme/theme-icon";
-import { copyText, showManualCopy } from "@/lib/copy-text";
 import { useShoppingList } from "@/hooks/useShoppingList";
+import { ShareImageActions } from "@/components/share/share-image-actions";
 
 export function MenuDashboard() {
   const { menu, hydrated, removeDish, randomize, clearMenu, saveHistory } = useMenu();
-  const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "failed">("idle");
   const { groups, items: savedShoppingItems, persist: saveShopping, toggle: toggleShopping, hasSavedList } = useShoppingList(menu);
-  const copy = async () => {
-    const text = createShareText(menu);
-    const copied = await copyText(text);
-    if (!copied) showManualCopy(text);
-    setCopyStatus(copied ? "copied" : "failed");
-    setTimeout(() => setCopyStatus("idle"), 1800);
-  };
 
   if (!hydrated) return <div className="loading-card"><span /><span /><span /></div>;
 
@@ -40,7 +30,8 @@ export function MenuDashboard() {
         <div className="section-head"><div><span className="mini-label">How to cook</span><h2>做菜顺序</h2></div></div>
         <div className="tutorial-list">{menu.map((dish, index) => <Link href={`/dishes/${dish.slug}`} key={dish.id}><b>{String(index + 1).padStart(2, "0")}</b><span><strong>{dish.name}</strong><small>{dish.steps.map((step) => step.title).join(" → ")}</small></span><i>→</i></Link>)}</div>
       </section>
-      <div className="sticky-actions"><button className="soft-button" onClick={saveHistory}>保存今晚</button><button className="primary-button" onClick={copy}>{copyStatus === "copied" ? "已复制，可以发给她啦" : copyStatus === "failed" ? "请在弹窗中复制" : "复制分享清单"}</button></div>
+      <section className="menu-section menu-share-section"><div className="section-head"><div><span className="mini-label">Share tonight</span><h2>分享今晚备忘卡</h2></div></div><p>把今晚菜单和买菜清单做成一张精美图片，直接发给她。</p><ShareImageActions menu={menu} compact /></section>
+      <div className="sticky-actions"><button className="soft-button" onClick={saveHistory}>保存今晚</button></div>
       <button className="danger-link" onClick={clearMenu}>清空今晚菜单</button>
     </div>
   );
