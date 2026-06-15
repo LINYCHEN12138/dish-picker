@@ -46,9 +46,16 @@ security definer
 set search_path = public
 as $$
 begin
-  insert into public.profiles(id, display_name)
-  values (new.id, '我')
-  on conflict (id) do nothing;
+  begin
+    insert into public.profiles(id, display_name)
+    values (new.id, '我')
+    on conflict (id) do nothing;
+  exception when others then
+    -- Legacy profile schemas may contain additional required columns.
+    -- Personal persistence tables reference auth.users directly, so profile
+    -- creation must never block an anonymous sign-in.
+    null;
+  end;
   return new;
 end;
 $$;
